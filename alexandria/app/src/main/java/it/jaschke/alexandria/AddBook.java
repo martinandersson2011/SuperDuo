@@ -1,7 +1,6 @@
 package it.jaschke.alexandria;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,7 +23,9 @@ import it.jaschke.alexandria.services.BookService;
 import it.jaschke.alexandria.services.DownloadImage;
 
 public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = "INTENT_TO_SCAN_ACTIVITY";
+    public static final String TAG = AddBook.class.getSimpleName();
+    public static final int REQUEST_CODE_SCAN = 1337;
+
     private EditText ean;
     private final int LOADER_ID = 1;
     private View rootView;
@@ -86,18 +87,14 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         rootView.findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // This is the callback method that the system will invoke when your button is
-                // clicked. You might do this by launching another app or by including the
-                //functionality directly in this app.
-                // Hint: Use a Try/Catch block to handle the Intent dispatch gracefully, if you
-                // are using an external app.
-                //when you're done, remove the toast below.
-                Context context = getActivity();
-                CharSequence text = "This button should let you scan a book for its barcode!";
-                int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                try {
+                    // This intent will ask the Barcode Scanner app to scan a code and give us the result
+                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    startActivityForResult(intent, REQUEST_CODE_SCAN);
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "Please install barcode scanning app.", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -126,6 +123,17 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         }
 
         return rootView;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == REQUEST_CODE_SCAN) {
+            if (resultCode == Activity.RESULT_OK) {
+                String scanResult = intent.getStringExtra("SCAN_RESULT");
+                ean.setText(scanResult);
+                ean.setSelection(ean.getText().length());
+            }
+        }
+
     }
 
     private void restartLoader() {
