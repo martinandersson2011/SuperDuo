@@ -28,10 +28,10 @@ import barqsoft.footballscores.R;
 /**
  * Created by yehya khaled on 3/2/2015.
  */
-public class MyFetchService extends IntentService {
-    public static final String TAG = MyFetchService.class.getSimpleName();
+public class FootballFetchService extends IntentService {
+    public static final String TAG = FootballFetchService.class.getSimpleName();
 
-    public MyFetchService() {
+    public FootballFetchService() {
         super(TAG);
     }
 

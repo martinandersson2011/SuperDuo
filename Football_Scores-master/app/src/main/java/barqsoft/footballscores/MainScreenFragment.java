@@ -13,22 +13,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import barqsoft.footballscores.service.MyFetchService;
+import barqsoft.footballscores.service.FootballFetchService;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainScreenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    public ScoresAdapter mAdapter;
+    public FootballScoresAdapter mAdapter;
     public static final int SCORES_LOADER = 0;
     private String[] fragmentDate = new String[1];
-    private int lastSelectedItem = -1;
 
     public MainScreenFragment() {
     }
 
     private void updateScores() {
-        Intent service_start = new Intent(getActivity(), MyFetchService.class);
+        Intent service_start = new Intent(getActivity(), FootballFetchService.class);
         getActivity().startService(service_start);
     }
 
@@ -40,12 +39,12 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         updateScores();
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        final ListView score_list = (ListView) rootView.findViewById(R.id.scores_list);
-        mAdapter = new ScoresAdapter(getActivity(), null, 0);
-        score_list.setAdapter(mAdapter);
+        final ListView scoresListView = (ListView) rootView.findViewById(R.id.scores_list);
+        mAdapter = new FootballScoresAdapter(getActivity(), null, 0);
+        scoresListView.setAdapter(mAdapter);
         getLoaderManager().initLoader(SCORES_LOADER, null, this);
         mAdapter.detailMatchId = MainActivity.selectedMatchId;
-        score_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        scoresListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ViewHolder selected = (ViewHolder) view.getTag();
@@ -65,25 +64,13 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        //Log.v(FetchScoreTask.TAG,"loader finished");
-        //cursor.moveToFirst();
-        /*
-        while (!cursor.isAfterLast())
-        {
-            Log.v(FetchScoreTask.TAG,cursor.getString(1));
-            cursor.moveToNext();
-        }
-        */
-
         int i = 0;
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             i++;
             cursor.moveToNext();
         }
-        //Log.v(FetchScoreTask.TAG,"Loader query: " + String.valueOf(i));
         mAdapter.swapCursor(cursor);
-        //mAdapter.notifyDataSetChanged();
     }
 
     @Override

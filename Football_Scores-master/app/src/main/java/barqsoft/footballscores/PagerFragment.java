@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by yehya khaled on 2/27/2015.
@@ -31,9 +32,9 @@ public class PagerFragment extends Fragment {
         mPagerAdapter = new myPageAdapter(getChildFragmentManager());
         for (int i = 0; i < NUM_PAGES; i++) {
             Date date = new Date(System.currentTimeMillis() + ((i - 2) * 86400000));
-            SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             viewFragments[i] = new MainScreenFragment();
-            viewFragments[i].setFragmentDate(mformat.format(date));
+            viewFragments[i].setFragmentDate(simpleDateFormat.format(date));
         }
         mPagerHandler.setAdapter(mPagerAdapter);
         mPagerHandler.setCurrentItem(MainActivity.currentFragment);
@@ -79,7 +80,7 @@ public class PagerFragment extends Fragment {
                 Time time = new Time();
                 time.setToNow();
                 // Otherwise, the format is just the day of the week (e.g "Wednesday".
-                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
                 return dayFormat.format(dateInMillis);
             }
         }
