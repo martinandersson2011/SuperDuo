@@ -57,8 +57,8 @@ public class Utilies {
         if (teamName == null) {
             return R.drawable.no_icon;
         }
-        switch (teamName) { //This is the set of icons that are currently in the app. Feel free to find and add more
-            //as you go.
+        switch (teamName) {
+            // This is the set of icons that are currently in the app. Feel free to find and add more.
             case "Arsenal London FC":
                 return R.drawable.arsenal;
             case "Manchester United FC":

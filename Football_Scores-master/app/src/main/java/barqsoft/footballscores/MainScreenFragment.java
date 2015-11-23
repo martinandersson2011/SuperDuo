@@ -27,8 +27,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     }
 
     private void updateScores() {
-        Intent service_start = new Intent(getActivity(), FootballFetchService.class);
-        getActivity().startService(service_start);
+        getActivity().startService(new Intent(getActivity(), FootballFetchService.class));
     }
 
     public void setFragmentDate(String date) {
@@ -58,8 +57,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(getActivity(), DatabaseContract.scores_table.buildScoreWithDate(),
-                null, null, fragmentDate, null);
+        return new CursorLoader(getActivity(), DatabaseContract.scores_table.buildScoreWithDate(), null, null, fragmentDate, null);
     }
 
     @Override
