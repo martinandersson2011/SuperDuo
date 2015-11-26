@@ -10,6 +10,10 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity {
     public static String TAG = MainActivity.class.getSimpleName();
 
+    private static final String KEY_PAGER_CURRENT = "Pager_Current";
+    private static final String KEY_SELECTED_MATCH = "Selected_match";
+    private static final String KEY_PAGER_FRAGMENT = "pagerFragment";
+
     public static int selectedMatchId;
     public static int currentFragment = 2;
     private PagerFragment pagerFragment;
@@ -18,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "Reached MainActivity onCreate");
+        Log.d(TAG, "onCreate");
         if (savedInstanceState == null) {
             pagerFragment = new PagerFragment();
             getSupportFragmentManager().beginTransaction()
@@ -53,23 +57,17 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.v(TAG, "onSaveInstanceState");
-        Log.v(TAG, "fragment: " + String.valueOf(pagerFragment.mPagerHandler.getCurrentItem()));
-        Log.v(TAG, "selected id: " + selectedMatchId);
-        outState.putInt("Pager_Current", pagerFragment.mPagerHandler.getCurrentItem());
-        outState.putInt("Selected_match", selectedMatchId);
-        getSupportFragmentManager().putFragment(outState, "pagerFragment", pagerFragment);
+        outState.putInt(KEY_PAGER_CURRENT, pagerFragment.mPagerHandler.getCurrentItem());
+        outState.putInt(KEY_SELECTED_MATCH, selectedMatchId);
+        getSupportFragmentManager().putFragment(outState, KEY_PAGER_FRAGMENT, pagerFragment);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        Log.v(TAG, "onRestoreInstanceState");
-        Log.v(TAG, "fragment: " + String.valueOf(savedInstanceState.getInt("Pager_Current")));
-        Log.v(TAG, "selected id: " + savedInstanceState.getInt("Selected_match"));
-        currentFragment = savedInstanceState.getInt("Pager_Current");
-        selectedMatchId = savedInstanceState.getInt("Selected_match");
-        pagerFragment = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "pagerFragment");
+        currentFragment = savedInstanceState.getInt(KEY_PAGER_CURRENT);
+        selectedMatchId = savedInstanceState.getInt(KEY_SELECTED_MATCH);
+        pagerFragment = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, KEY_PAGER_FRAGMENT);
         super.onRestoreInstanceState(savedInstanceState);
     }
 }

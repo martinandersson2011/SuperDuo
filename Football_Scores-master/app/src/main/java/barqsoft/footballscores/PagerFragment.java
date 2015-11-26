@@ -23,7 +23,7 @@ public class PagerFragment extends Fragment {
     public static final int NUM_PAGES = 5;
     public ViewPager mPagerHandler;
     private FootballPageAdapter mPagerAdapter;
-    private MainScreenFragment[] viewFragments = new MainScreenFragment[5];
+    private MainScreenFragment[] mMainScreenFragments = new MainScreenFragment[5];
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,8 +33,8 @@ public class PagerFragment extends Fragment {
         for (int i = 0; i < NUM_PAGES; i++) {
             Date date = new Date(System.currentTimeMillis() + ((i - 2) * 86400000));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-            viewFragments[i] = new MainScreenFragment();
-            viewFragments[i].setFragmentDate(simpleDateFormat.format(date));
+            mMainScreenFragments[i] = new MainScreenFragment();
+            mMainScreenFragments[i].setFragmentDate(simpleDateFormat.format(date));
         }
         mPagerHandler.setAdapter(mPagerAdapter);
         mPagerHandler.setCurrentItem(MainActivity.currentFragment);
@@ -44,7 +44,7 @@ public class PagerFragment extends Fragment {
     private class FootballPageAdapter extends FragmentStatePagerAdapter {
         @Override
         public Fragment getItem(int i) {
-            return viewFragments[i];
+            return mMainScreenFragments[i];
         }
 
         @Override

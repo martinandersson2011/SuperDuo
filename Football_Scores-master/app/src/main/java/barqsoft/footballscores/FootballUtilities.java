@@ -3,12 +3,16 @@ package barqsoft.footballscores;
 /**
  * Created by yehya khaled on 3/3/2015.
  */
-public class Utilies {
+public final class FootballUtilities {
     public static final int SERIE_A = 357;
     public static final int PREMIER_LEGAUE = 354;
     public static final int CHAMPIONS_LEAGUE = 362;
     public static final int PRIMERA_DIVISION = 358;
     public static final int BUNDESLIGA = 351;
+
+    private FootballUtilities() {
+        // Hidden constructor
+    }
 
     public static String getLeague(int leagueNum) {
         switch (leagueNum) {
