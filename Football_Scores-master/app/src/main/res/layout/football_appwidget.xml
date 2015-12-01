@@ -5,20 +5,28 @@
     android:padding="@dimen/widget_margin">
 
     <RelativeLayout
+        android:id="@+id/widget_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@android:color/black"
         tools:context="barqsoft.footballscores.AboutActivity$PlaceholderFragment">
 
+        <!-- ListView to be shown on widget -->
+        <ListView
+            android:id="@+id/widget_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Empty view is show if list items are empty -->
         <TextView
-            android:id="@+id/widget_textview"
+            android:id="@+id/widget_empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:ellipsize="end"
             android:gravity="center"
-            android:text="TODO - FOOTBALL WIDGET"
-            android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:text="@string/empty_string"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:visibility="visible" />
 
     </RelativeLayout>
 
