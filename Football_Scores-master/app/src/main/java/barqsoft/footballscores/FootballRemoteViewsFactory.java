@@ -13,13 +13,13 @@ import android.widget.RemoteViewsService.RemoteViewsFactory;
 import java.util.ArrayList;
 
 public class FootballRemoteViewsFactory implements RemoteViewsFactory {
-    private ArrayList<ListItem> listItemList = new ArrayList<ListItem>();
-    private Context context = null;
-    private int appWidgetId;
+    private ArrayList<ListItem> mListItems = new ArrayList<ListItem>();
+    private Context mContext = null;
+    private int mAppWidgetId;
 
     public FootballRemoteViewsFactory(Context context, Intent intent) {
-        this.context = context;
-        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        mContext = context;
+        mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
         populateListItem();
     }
@@ -29,14 +29,14 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
             ListItem listItem = new ListItem();
             listItem.heading = "Heading " + i;
             listItem.content = "Content " + i;
-            listItemList.add(listItem);
+            mListItems.add(listItem);
         }
 
     }
 
     @Override
     public int getCount() {
-        return listItemList.size();
+        return mListItems.size();
     }
 
     @Override
@@ -46,8 +46,8 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
 
     @Override
     public RemoteViews getViewAt(int position) {
-        final RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.list_row);
-        ListItem listItem = listItemList.get(position);
+        final RemoteViews remoteView = new RemoteViews(mContext.getPackageName(), R.layout.list_row);
+        ListItem listItem = mListItems.get(position);
         remoteView.setTextViewText(R.id.heading, listItem.heading);
         remoteView.setTextViewText(R.id.content, listItem.content);
 
