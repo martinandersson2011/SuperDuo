@@ -12,12 +12,12 @@ import android.widget.RemoteViewsService.RemoteViewsFactory;
 
 import java.util.ArrayList;
 
-public class ListProvider implements RemoteViewsFactory {
+public class FootballRemoteViewsFactory implements RemoteViewsFactory {
     private ArrayList<ListItem> listItemList = new ArrayList<ListItem>();
     private Context context = null;
     private int appWidgetId;
 
-    public ListProvider(Context context, Intent intent) {
+    public FootballRemoteViewsFactory(Context context, Intent intent) {
         this.context = context;
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 

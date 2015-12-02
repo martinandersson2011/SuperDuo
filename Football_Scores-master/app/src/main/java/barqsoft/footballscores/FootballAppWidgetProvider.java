@@ -27,7 +27,7 @@ public class FootballAppWidgetProvider extends AppWidgetProvider {
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.football_appwidget);
 
-        Intent intent = new Intent(context, WidgetService.class);
+        Intent intent = new Intent(context, FootballRemoteViewsService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 

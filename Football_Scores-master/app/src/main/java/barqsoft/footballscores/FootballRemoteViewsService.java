@@ -7,7 +7,7 @@ import android.widget.RemoteViewsService;
 /**
  * Created by martin.andersson on 12/1/15.
  */
-public class WidgetService extends RemoteViewsService {
+public class FootballRemoteViewsService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -15,7 +15,7 @@ public class WidgetService extends RemoteViewsService {
                 AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
 
-        return (new ListProvider(this.getApplicationContext(), intent));
+        return (new FootballRemoteViewsFactory(this.getApplicationContext(), intent));
     }
 
 }
