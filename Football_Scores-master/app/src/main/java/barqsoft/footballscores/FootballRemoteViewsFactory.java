@@ -20,19 +20,21 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
     public FootballRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
         mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-
-        populateListItem();
     }
 
-    private void populateListItem() {
+    public void onCreate() {
+        // In onCreate() you setup any connections / cursors to your data source.
+        // Heavy lifting, for example downloading or creating content etc, should be deferred to onDataSetChanged() or getViewAt().
+        // Taking more than 20 seconds in this call will result in an ANR.
+
         for (int i = 0; i < 100; i++) {
             ListItem listItem = new ListItem();
             listItem.heading = "Heading " + i;
             listItem.content = "Content " + i;
             mListItems.add(listItem);
         }
-
     }
+
 
     @Override
     public int getCount() {
@@ -68,10 +70,6 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
     @Override
     public boolean hasStableIds() {
         return true;
-    }
-
-    @Override
-    public void onCreate() {
     }
 
     @Override
