@@ -51,12 +51,14 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         Log.d(TAG, "getViewAt: " + position);
 
-        final RemoteViews remoteView = new RemoteViews(mContext.getPackageName(), R.layout.list_row);
+        final RemoteViews remoteView = new RemoteViews(mContext.getPackageName(), R.layout.widget_row);
 
         if (mCursor.moveToPosition(position)) {
 
-            remoteView.setTextViewText(R.id.heading, mCursor.getString(FootballScoresAdapter.COL_HOME));
-            remoteView.setTextViewText(R.id.content, mCursor.getString(FootballScoresAdapter.COL_AWAY));
+            remoteView.setTextViewText(R.id.match_time, mCursor.getString(FootballScoresAdapter.COL_MATCHTIME));
+            remoteView.setTextViewText(R.id.home_team_name, mCursor.getString(FootballScoresAdapter.COL_HOME));
+            remoteView.setTextViewText(R.id.away_team_name, mCursor.getString(FootballScoresAdapter.COL_AWAY));
+            remoteView.setTextViewText(R.id.score, FootballUtilities.getScores(mCursor.getInt(FootballScoresAdapter.COL_HOME_GOALS), mCursor.getInt(FootballScoresAdapter.COL_AWAY_GOALS)));
 
         } else {
             Log.w(TAG, "FAILED TO move cursor to position: " + position);
@@ -87,7 +89,6 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
         if (mCursor != null) {
             mCursor.close();
         }
-
 
         // TODO, should we get all matches? Matches by date?
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
