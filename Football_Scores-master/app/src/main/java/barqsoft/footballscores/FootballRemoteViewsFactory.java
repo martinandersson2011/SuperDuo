@@ -8,18 +8,18 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class FootballRemoteViewsFactory implements RemoteViewsFactory {
     public static final String TAG = FootballRemoteViewsFactory.class.getSimpleName();
 
-    public static final int DAY_BEFORE_YESTERDAY = -2;
-    public static final int YESTERDAY = -1;
+    public static final boolean ONLY_SHOW_TODAYS_MATCHES = false;
     public static final int TODAY = 0;
-    public static final int TOMORROW = 1;
-    public static final int DAY_AFTER_TOMORROW = 2;
 
     private Context mContext = null;
     private int mAppWidgetId;
@@ -38,7 +38,6 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
     @Override
     public int getCount() {
         int count = mCursor.getCount();
-        Log.d(TAG, "getCount: " + count);
         return count;
     }
 
@@ -49,7 +48,6 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
 
     @Override
     public RemoteViews getViewAt(int position) {
-        Log.d(TAG, "getViewAt: " + position);
 
         final RemoteViews remoteView = new RemoteViews(mContext.getPackageName(), R.layout.widget_row);
 
@@ -59,9 +57,6 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
             remoteView.setTextViewText(R.id.home_team_name, mCursor.getString(FootballScoresAdapter.COL_HOME));
             remoteView.setTextViewText(R.id.away_team_name, mCursor.getString(FootballScoresAdapter.COL_AWAY));
             remoteView.setTextViewText(R.id.score, FootballUtilities.getScores(mCursor.getInt(FootballScoresAdapter.COL_HOME_GOALS), mCursor.getInt(FootballScoresAdapter.COL_AWAY_GOALS)));
-
-        } else {
-            Log.w(TAG, "FAILED TO move cursor to position: " + position);
         }
 
 
@@ -90,20 +85,19 @@ public class FootballRemoteViewsFactory implements RemoteViewsFactory {
             mCursor.close();
         }
 
-        // TODO, should we get all matches? Matches by date?
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-//        String[] selectionArgs = new String[1];
-//        selectionArgs[0] = simpleDateFormat.format(new Date(System.currentTimeMillis() + ((TODAY) * 86400000)));
-//        selectionArgs[0] = simpleDateFormat.format(new Date(System.currentTimeMillis() + ((TOMORROW) * 86400000)));
-//        selectionArgs[0] = simpleDateFormat.format(new Date(System.currentTimeMillis() + ((DAY_AFTER_TOMORROW) * 86400000)));
-//        mCursor = mContext.getContentResolver().query(DatabaseContract.scores_table.buildScoreWithDate(), null, null, selectionArgs, null);
+        if (ONLY_SHOW_TODAYS_MATCHES) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            String[] selectionArgs = new String[1];
+            selectionArgs[0] = simpleDateFormat.format(new Date(System.currentTimeMillis() + ((TODAY) * 86400000)));
+            mCursor = mContext.getContentResolver().query(DatabaseContract.scores_table.buildScoreWithDate(), null, null, selectionArgs, null);
+        } else {
+            mCursor = mContext.getContentResolver().query(DatabaseContract.scores_table.buildScores(), null, null, null, null);
+        }
 
-        mCursor = mContext.getContentResolver().query(DatabaseContract.scores_table.buildScores(), null, null, null, null);
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy");
         if (mCursor != null) {
             mCursor.close();
         }
