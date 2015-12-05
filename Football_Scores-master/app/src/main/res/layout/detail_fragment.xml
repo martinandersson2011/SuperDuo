@@ -45,8 +45,10 @@
             android:drawableLeft="@android:drawable/ic_menu_share"
             android:drawableStart="@android:drawable/ic_menu_share"
             android:gravity="center"
-            android:paddingLeft="120dp"
-            android:paddingRight="120dp"
+            android:paddingEnd="@dimen/share_button_padding"
+            android:paddingLeft="@dimen/share_button_padding"
+            android:paddingRight="@dimen/share_button_padding"
+            android:paddingStart="@dimen/share_button_padding"
             android:text="@string/share_text" />
     </FrameLayout>
 
